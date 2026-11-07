@@ -8,60 +8,73 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 40) {
+      if (window.scrollY > 20) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
       }
 
       // Update active section based on scroll position
-      const sections = ['home', 'abouts', 'skil', 'ject', 'contents'];
-      const scrollPosition = window.scrollY + 200;
+      const sections = ['home', 'about', 'skills', 'projects', 'experience', 'contact'];
+      const scrollPosition = window.scrollY + 220;
 
-      for (const section of sections) {
-        const el = document.getElementById(section);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPosition >= top && scrollPosition < top + height) {
-            setActiveSection(section);
-            break;
-          }
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const sectionId = sections[i];
+        const el = document.getElementById(sectionId);
+        if (el && scrollPosition >= el.offsetTop) {
+          setActiveSection(sectionId);
+          break;
         }
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const navLinks = [
     { label: 'Home', href: '#home', id: 'home' },
-    { label: 'About', href: '#abouts', id: 'abouts' },
-    { label: 'Skills', href: '#skil', id: 'skil' },
-    { label: 'Projects', href: '#ject', id: 'ject' },
-    { label: 'Contact', href: '#contents', id: 'contents' }
+    { label: 'About', href: '#about', id: 'about' },
+    { label: 'Skills', href: '#skills', id: 'skills' },
+    { label: 'Projects', href: '#projects', id: 'projects' },
+    { label: 'Experience', href: '#experience', id: 'experience' },
+    { label: 'Contact', href: '#contact', id: 'contact' }
   ];
+
+  const handleNavClick = (id) => {
+    setActiveSection(id);
+    setMobileMenuOpen(false);
+  };
 
   return (
     <>
       <header className={`navbar-header ${isScrolled ? 'scrolled' : ''}`}>
         <div className="container nav-container">
-          <a href="#home" className="nav-brand">
-            <span className="brand-badge">Dil̥l̥i</span>
-            <span style={{ color: 'var(--purple-bright)' }}>Prāśāṭh</span>
+          <a href="#home" className="nav-brand" onClick={() => handleNavClick('home')}>
+            <span className="brand-logo-badge">
+              <span className="brand-logo-text">Dilli</span>
+              <span className="brand-logo-dots">
+                <span className="brand-dot"></span>
+                <span className="brand-line"></span>
+                <span className="brand-dot"></span>
+              </span>
+            </span>
+            <span className="brand-surname">Prasath</span>
           </a>
 
           {/* Desktop Navigation */}
-          <nav>
+          <nav className="desktop-nav" aria-label="Main Navigation">
             <ul className="nav-menu">
               {navLinks.map((link) => (
                 <li key={link.id}>
                   <a
                     href={link.href}
                     className={`nav-link ${activeSection === link.id ? 'active' : ''}`}
+                    onClick={() => handleNavClick(link.id)}
                   >
-                    {link.label}
+                    <span>{link.label}</span>
+                    {activeSection === link.id && <span className="active-pill-bar"></span>}
                   </a>
                 </li>
               ))}
@@ -71,8 +84,9 @@ export default function Navbar() {
           <div className="nav-actions">
             <a
               href={personalInfo.resumeUrl}
-              download
-              className="btn btn-primary"
+              download="Dilli_Prasath_Resume.pdf"
+              className="btn-download-cv"
+              title="Download Dilli's CV"
             >
               <span>Download CV</span>
               <i className="fa-solid fa-arrow-down"></i>
@@ -82,6 +96,7 @@ export default function Navbar() {
               className="mobile-toggle"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle navigation menu"
+              aria-expanded={mobileMenuOpen}
             >
               <i className={`fa-solid ${mobileMenuOpen ? 'fa-xmark' : 'fa-bars'}`}></i>
             </button>
@@ -89,38 +104,54 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* Mobile Menu Drawer */}
+      {/* Mobile Menu Backdrop & Drawer */}
+      <div 
+        className={`mobile-backdrop ${mobileMenuOpen ? 'open' : ''}`} 
+        onClick={() => setMobileMenuOpen(false)}
+      />
+      
       <div className={`mobile-drawer ${mobileMenuOpen ? 'open' : ''}`}>
-        <button
-          className="modal-close-btn"
-          style={{ top: 25, right: 25 }}
-          onClick={() => setMobileMenuOpen(false)}
-          aria-label="Close menu"
-        >
-          <i className="fa-solid fa-xmark"></i>
-        </button>
+        <div className="mobile-drawer-header">
+          <a href="#home" className="nav-brand" onClick={() => handleNavClick('home')}>
+            <span className="brand-logo-badge">
+              <span className="brand-logo-text">Dilli</span>
+            </span>
+            <span className="brand-surname">Prasath</span>
+          </a>
+          <button
+            className="mobile-close-btn"
+            onClick={() => setMobileMenuOpen(false)}
+            aria-label="Close menu"
+          >
+            <i className="fa-solid fa-xmark"></i>
+          </button>
+        </div>
 
-        {navLinks.map((link) => (
+        <nav className="mobile-nav-list">
+          {navLinks.map((link) => (
+            <a
+              key={link.id}
+              href={link.href}
+              className={`mobile-nav-link ${activeSection === link.id ? 'active' : ''}`}
+              onClick={() => handleNavClick(link.id)}
+            >
+              <span>{link.label}</span>
+              {activeSection === link.id && <i className="fa-solid fa-check"></i>}
+            </a>
+          ))}
+        </nav>
+
+        <div className="mobile-drawer-footer">
           <a
-            key={link.id}
-            href={link.href}
-            className={`mobile-nav-link ${activeSection === link.id ? 'active' : ''}`}
+            href={personalInfo.resumeUrl}
+            download="Dilli_Prasath_Resume.pdf"
+            className="btn-download-cv full-width"
             onClick={() => setMobileMenuOpen(false)}
           >
-            {link.label}
+            <span>Download CV</span>
+            <i className="fa-solid fa-arrow-down"></i>
           </a>
-        ))}
-
-        <a
-          href={personalInfo.resumeUrl}
-          download
-          className="btn btn-primary"
-          style={{ marginTop: 20 }}
-          onClick={() => setMobileMenuOpen(false)}
-        >
-          <span>Download CV</span>
-          <i className="fa-solid fa-arrow-down"></i>
-        </a>
+        </div>
       </div>
     </>
   );

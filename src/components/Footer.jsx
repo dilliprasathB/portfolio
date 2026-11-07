@@ -9,34 +9,98 @@ export default function Footer() {
     });
   };
 
+  const navLinks = [
+    { label: 'Home', href: '#home' },
+    { label: 'About', href: '#about' },
+    { label: 'Skills', href: '#skills' },
+    { label: 'Projects', href: '#projects' },
+    { label: 'Experience', href: '#experience' },
+    { label: 'Contact', href: '#contact' }
+  ];
+
   return (
-    <footer className="footer-section">
+    <footer className="footer-container">
       <div className="container">
-        <div className="footer-top">
-          <div className="footer-quote">
-            <h3>{personalInfo.fullName}</h3>
-            <p>"Happiness is nothing more than a state of mind."</p>
+        <div className="footer-grid">
+          {/* Brand Info */}
+          <div className="footer-brand-column">
+            <a href="#home" className="footer-brand">
+              <span className="brand-logo-badge">
+                <span className="brand-logo-text">Dilli</span>
+              </span>
+              <span className="brand-surname">Prasath</span>
+            </a>
+            <p className="footer-bio">
+              Java Full Stack Developer & AI Enthusiast crafting scalable backends, intuitive user experiences, and intelligent digital systems.
+            </p>
+            <div className="footer-availability">
+              <span className="footer-status-dot"></span>
+              <span>Available for Roles & Projects</span>
+            </div>
           </div>
 
-          <button
-            className="scroll-top-btn"
-            onClick={scrollToTop}
-            aria-label="Scroll back to top"
-            title="Back to Top"
-          >
-            <i className="fa-solid fa-circle-arrow-up"></i>
-          </button>
+          {/* Quick Links */}
+          <div className="footer-links-column">
+            <h4 className="footer-heading">Navigation</h4>
+            <ul className="footer-nav-list">
+              {navLinks.map((link) => (
+                <li key={link.label}>
+                  <a href={link.href} className="footer-nav-link">
+                    <i className="fa-solid fa-chevron-right"></i>
+                    <span>{link.label}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Social Profiles & Download */}
+          <div className="footer-social-column">
+            <h4 className="footer-heading">Connect & Socials</h4>
+            <p className="footer-subtext">Reach out on social networks or view open source repositories.</p>
+            <div className="footer-social-icons">
+              {personalInfo.socialLinks.map((social) => (
+                <a
+                  key={social.name}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="footer-social-btn"
+                  title={social.name}
+                  aria-label={social.name}
+                >
+                  <i className={social.icon} style={{ color: social.color }}></i>
+                </a>
+              ))}
+            </div>
+
+            <a
+              href={personalInfo.resumeUrl}
+              download="Dilli_Prasath_Resume.pdf"
+              className="footer-resume-link"
+            >
+              <i className="fa-solid fa-file-arrow-down"></i>
+              <span>Download Resume (PDF)</span>
+            </a>
+          </div>
         </div>
 
-        <div className="footer-bottom">
-          <p>© {new Date().getFullYear()} {personalInfo.fullName}. All rights reserved.</p>
-          <div style={{ display: 'flex', gap: '20px' }}>
-            <a href="#home" style={{ color: 'var(--text-secondary)' }}>Home</a>
-            <a href="#abouts" style={{ color: 'var(--text-secondary)' }}>About</a>
-            <a href="#skil" style={{ color: 'var(--text-secondary)' }}>Skills</a>
-            <a href="#ject" style={{ color: 'var(--text-secondary)' }}>Projects</a>
-            <a href="#contents" style={{ color: 'var(--text-secondary)' }}>Contact</a>
-          </div>
+        {/* Bottom Bar */}
+        <div className="footer-bottom-bar">
+          <p className="footer-copyright">
+            © {new Date().getFullYear()} <strong>{personalInfo.fullName}</strong>. Designed with pure white & royal blue theme.
+          </p>
+
+          <button
+            type="button"
+            className="btn-back-to-top"
+            onClick={scrollToTop}
+            aria-label="Back to top"
+            title="Back to Top"
+          >
+            <span>Top</span>
+            <i className="fa-solid fa-arrow-up"></i>
+          </button>
         </div>
       </div>
     </footer>
