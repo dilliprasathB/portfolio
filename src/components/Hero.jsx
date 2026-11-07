@@ -20,7 +20,7 @@ export default function Hero() {
           </div>
 
           <h1 className="hero-name">
-            Dilli <span className="text-royal">Prasath</span>
+            Dilli <span>Prasath</span>
           </h1>
 
           <h2 className="hero-role-title">
@@ -65,7 +65,7 @@ export default function Hero() {
         <div className="hero-visual">
           <div className="hero-visual-stage">
             {/* Layer 1: Abstract Light Blue Outer Shape */}
-            <div className="abstract-shape abstract-shape-light">
+            <div className="abstract-shape abstract-shape-light" aria-hidden="true">
               <svg viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M420,130 C490,210 470,350 400,420 C330,490 190,480 120,410 C50,340 50,210 110,130 C170,50 350,50 420,130 Z"
@@ -75,7 +75,7 @@ export default function Hero() {
             </div>
 
             {/* Layer 2: Abstract Royal Blue Inner Slanted Capsule Shape */}
-            <div className="abstract-shape abstract-shape-royal">
+            <div className="abstract-shape abstract-shape-royal" aria-hidden="true">
               <svg viewBox="0 0 450 450" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M380,180 C430,260 410,380 340,410 C270,440 160,390 100,320 C40,250 50,150 110,90 C170,30 330,100 380,180 Z"
@@ -90,16 +90,19 @@ export default function Hero() {
               </svg>
             </div>
 
-            {/* Layer 3: Soft ambient glow */}
+            {/* Layer 3: Soft ambient light-blue glow */}
             <div className="hero-ambient-glow" aria-hidden="true"></div>
 
-            {/* Layer 4: Dilli's Cutout Portrait */}
+            {/* Layer 4: Transparent PNG Profile Cutout */}
             <div className="hero-portrait-frame">
               <img
-                src="/img/dilli_portrait_clean.png"
+                src="/img/dilli-profile.png"
                 alt="Dilli Prasath - Java Full Stack Developer & AI Enthusiast"
-                className="hero-portrait-img"
+                className="profile-image"
                 loading="eager"
+                onError={(e) => {
+                  e.target.src = '/dilli-profile.png';
+                }}
               />
             </div>
 
